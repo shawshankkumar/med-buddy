@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 fastapi = {extras = ["all"], version = "^0.109.0"}
 black = "^24.1.0"
+ulid-py = "^1.1.0"
 
 
 [build-system]

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import time
+import ulid
 
 app = FastAPI()
 
@@ -28,3 +29,8 @@ def health_check():
 @app.get("/")
 async def root():
     return {"message": "Index Route (/)"}
+
+
+@app.post("/upload")
+async def upload():
+    return {"message": "File uploaded", "code": ulid.new()}
