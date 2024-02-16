@@ -369,6 +369,31 @@ files = [
 ]
 
 [[package]]
+name = "libsql-experimental"
+version = "0.0.24"
+description = ""
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "libsql_experimental-0.0.24-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:c5143c57a4e5328f36daead9c92d25d906518cc07ea6aee7e8b0ccc56dda5587"},
+    {file = "libsql_experimental-0.0.24-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:f9c368c8afa1564b6ee7a1ffccad614fb7086c64574bd6319be348b4ea8aa118"},
+    {file = "libsql_experimental-0.0.24-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2a7bdf716b7b8ec330bf279c90bad94730a967e5850aa8461255344dfb8243ca"},
+    {file = "libsql_experimental-0.0.24-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:d8f792bd8c41374f5cf24f9a6f9bd6aa2921f3b3655d068e5d06b328930e1a69"},
+    {file = "libsql_experimental-0.0.24-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:a3e27464b81db908530f247caf7f73bf71f328a9f034d328bb50bf81a56a6bab"},
+    {file = "libsql_experimental-0.0.24-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:395693be3c8e363a80cac5bcab0810b607a31ac5ba4cbe58e753159d4e41f732"},
+    {file = "libsql_experimental-0.0.24-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:5efb6477929c82d3d0057fbf21097369a3dc4d323742016aa7bad41cf2ce6bc2"},
+    {file = "libsql_experimental-0.0.24-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2b8f96b18693c90b71a7516d02b23d77fc97e7868c42d1f7ebc5a5ea76302eff"},
+    {file = "libsql_experimental-0.0.24-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3859545ed7be2b14bd0217fd2e51a12040282603332878b77b3caf17c4d0b034"},
+    {file = "libsql_experimental-0.0.24-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6267eaece30f3a2da58e563500e62136d727657dad8dfc772f3f32a65fe77659"},
+    {file = "libsql_experimental-0.0.24-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6c5472e05dca0630040bb64a3fe54e447db7ca5832eeecf7bb7645996488b916"},
+    {file = "libsql_experimental-0.0.24-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7121b99998ed7c8a93421f4123da2dd019b88bf5a957071f4f304020c023557b"},
+    {file = "libsql_experimental-0.0.24-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b35e1754f7d9c151666ac289444719ec4fa39fa8585826b31b6258af7a4ef43f"},
+    {file = "libsql_experimental-0.0.24-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4abff331d8137a6871dcd1a35b075c515bbc245a026d9da9ab765275328e7162"},
+    {file = "libsql_experimental-0.0.24-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b9ad9a192ccdc2b44180acec7847cc8b3d65be16e16faef207bd7e0bfa1636c3"},
+    {file = "libsql_experimental-0.0.24.tar.gz", hash = "sha256:276fc5ab5fc009a47fbe1d3de444988e55adf0e4319b380d5660d5a1f634d66a"},
+]
+
+[[package]]
 name = "markupsafe"
 version = "2.1.4"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -1212,4 +1237,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "0e30139b239390759e51c86fb35553494b5d9d73bc9621172692f776f8ab1afb"
+content-hash = "36d005eca0da54df16ee2d0c172d175ada26bbba49ceffc24daca039f30d5bb3"

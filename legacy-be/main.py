@@ -6,6 +6,11 @@ import time
 import ulid
 import boto3
 from util import check_validation 
+import libsql_experimental as libsql
+
+
+con = libsql.connect(database='libsql://major-shawshankkumar.turso.io', auth_token='ea157546-bd47-11ee-a7e9-f29cbc2874af')
+cur = con.cursor()
 
 app = FastAPI()
 
@@ -49,6 +54,9 @@ async def upload(request: Request, file: UploadFile = File(...)):
     user_id = request.headers.get('Authorization')
     if(not check_validation(user_id)):
         return JSONResponse(status_code = 401, content = {"message": "Auth headers are required"})
+    cur.execute("CREATE TABLE users (id INTEGER, email TEXT);")
+    cur.execute("INSERT INTO users VALUES (1, 'alice@example.org')")
+
     content = await file.read()
     file_key = 'file_' + str(ulid.new())
     s3.upload_fileobj(io.BytesIO(content), bucket_name, user_id + '/' + file_key)
