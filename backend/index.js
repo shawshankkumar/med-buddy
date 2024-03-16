@@ -10,6 +10,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const PdfParse = require("pdf-parse");
 const axios = require("axios");
 const bcrypt = require("bcrypt");
+const cors = require("cors")
 let db;
 
 const genAI = new GoogleGenerativeAI("AIzaSyDvx6DYQF168oHBaidcqu4fKkATHZf9LQE");
@@ -32,6 +33,7 @@ async function getDb() {
 const port = 3001;
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cors())
 
 function deleteFile(filePath, filename) {
   if (fs.existsSync(filePath)) {
@@ -137,7 +139,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
   await (await getDb())
     .collection("files")
-    .insertOne({ createdAt: +new Date(), userId, fileName: file.filename });
+    .insertOne({ createdAt: +new Date(), userId, fileName: file.filename, reportName: req.body.name});
 
   deleteFile(filePath, file.filename);
 });
