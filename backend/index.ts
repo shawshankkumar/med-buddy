@@ -1,80 +1,26 @@
-const express = require("express");
+import express from "express";
+import path from "path";
+import fs from "fs";
+import { ulid } from "ulid";
+import PdfParse from "pdf-parse";
+import axios from "axios";
+import bcrypt from "bcrypt";
+import cors from "cors";
+import { getDb } from "./src/lib/db";
+import { deleteFile } from "./src/lib/utils";
+import { s3, upload } from "./src/lib/storage";
+import helmet from "helmet";
+import { CONFIG } from "./src/lib/config";
+import { logger } from "./src/lib/logger";
+import { healthcheckService } from "./src/api/healthcheck";
+import { loginService, signupService } from "./src/api/auth";
+
+const port = process.env.PORT ?? 3001;
 const app = express();
-const multer = require("multer");
-const AWS = require("aws-sdk");
-const fs = require("fs");
-const path = require("path");
-const { ulid } = require("ulid");
-const { MongoClient } = require("mongodb");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const PdfParse = require("pdf-parse");
-const axios = require("axios");
-const bcrypt = require("bcrypt");
-const cors = require("cors")
-let db;
-
-const genAI = new GoogleGenerativeAI("AIzaSyDvx6DYQF168oHBaidcqu4fKkATHZf9LQE");
-
-async function initializeClient() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://majorproj:Anurocks1234$55sbdhsd2ijdwdonan@cluster0.0wodb.mongodb.net/major-proj"
-  );
-
-  return client.db();
-}
-
-async function getDb() {
-  if (!db) {
-    db = await initializeClient();
-  }
-  return db;
-}
-
-const port = 3001;
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(cors())
-
-function deleteFile(filePath, filename) {
-  if (fs.existsSync(filePath)) {
-    // Delete the file
-    fs.unlinkSync(filePath);
-    console.log(`${filename} has been deleted successfully.`);
-  } else {
-    console.log(`File ${filename} does not exist.`);
-  }
-}
-
-// Configure storage for Multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, "file_" + ulid() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype == "application/pdf") {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .pdf format allowed!"));
-    }
-  },
-});
-
-const s3 = new AWS.S3({
-  accessKeyId: "8d1d7da927b6a897dd462fe69b46954e",
-  secretAccessKey:
-    "b5cfdb89b62166644f07df75f8b5e14c8a22f40ae5de2319a4cc9ee133b9551a",
-  endpoint: "https://61837c45dfc997b1a932f4b2116d93ae.r2.cloudflarestorage.com",
-  s3ForcePathStyle: true,
-  signatureVersion: "v4",
-});
+app.use(cors());
+app.use(helmet());
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   const file = req.file;
@@ -116,7 +62,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   console.log(text_2, pdfData.text);
   // @ts-ignore
   if (text_2 === "false") {
-    deleteFile(filePath);
+    deleteFile(filePath, file.filename);
     return res.send({
       response: "Error",
       message: "Not a medical report",
@@ -137,9 +83,12 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     });
   });
 
-  await (await getDb())
-    .collection("files")
-    .insertOne({ createdAt: +new Date(), userId, fileName: file.filename, reportName: req.body.name});
+  await (await getDb()).collection("files").insertOne({
+    createdAt: +new Date(),
+    userId,
+    fileName: file.filename,
+    reportName: req.body.name,
+  });
 
   deleteFile(filePath, file.filename);
 });
@@ -214,76 +163,12 @@ app.post("/summary", async (req, res) => {
   });
 });
 
-app.post("/register", async (req, res) => {
-  const { email, password, name } = req.body;
-  if (!email || !password || !name) {
-    return res.status(400).json({ message: "Email and password are required" });
-  }
-  const existingUser = await (await getDb())
-    .collection("users")
-    .findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ message: "Email already exists" });
-  }
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const userId = "user_" + ulid();
-  await (await getDb()).collection("users").insertOne({
-    email,
-    password: hashedPassword,
-    createdAt: +new Date(),
-    name,
-    userId,
-  });
-  res.status(201).json({ message: "User registered successfully" });
-});
+app.post("/register", signupService);
 
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+app.post("/login", loginService);
 
-    // Check if both email and password are provided
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
-    }
-
-    // Find the user by email
-    const user = await (await getDb()).collection("users").findOne({ email });
-
-    // Check if the user exists
-    if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    // Compare passwords
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    const token = "token_" + ulid();
-    await (await getDb()).collection("tokens").insertOne({
-      token,
-      userId: user.userId,
-      createdAt: +new Date(),
-      role: ["developer"],
-    });
-    res.status(200).json({
-      message: "Login successful",
-      user: { email: user.email, name: user.name, userId: user.userId },
-      token,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-app.get("/", (req, res) => {
-  res.send("Med Buddy");
-});
+app.get("/", healthcheckService);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  logger.info(`MED BUDDY app listening on port ${port}`);
 });
