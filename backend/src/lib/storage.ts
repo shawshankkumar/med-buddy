@@ -3,19 +3,20 @@ import AWS from "aws-sdk";
 import { ulid } from "ulid";
 import path from "path";
 import { CONFIG } from "./config";
+import { Request } from "express";
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: Request, file: any, cb: Function) => {
     cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
+  filename: (req: Request, file: any, cb: Function) => {
     cb(null, "file_" + ulid() + path.extname(file.originalname));
   },
 });
 
 export const upload = multer({
   storage: storage,
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req: Request, file: any, cb: Function) => {
     if (file.mimetype == "application/pdf") {
       cb(null, true);
     } else {

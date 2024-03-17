@@ -1,6 +1,6 @@
-import { MongoClient } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 import { CONFIG } from "./config";
-let db;
+let db: Db;
 
 async function initializeClient() {
   const client = await MongoClient.connect(CONFIG.DB_URI);
@@ -10,6 +10,7 @@ async function initializeClient() {
 
 export async function getDb() {
   if (!db) {
+    // @ts-ignore
     db = await initializeClient();
   }
   return db;

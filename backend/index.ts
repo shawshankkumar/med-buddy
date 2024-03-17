@@ -8,6 +8,7 @@ import { filesService, uploadService } from "./src/api/files";
 import { summaryService } from "./src/api/genai";
 import { ulid } from "ulid";
 import { Request, Response, NextFunction } from "express";
+import { upload } from "./src/lib/storage";
 
 const port = process.env.PORT ?? 3001;
 const app = express();
@@ -22,7 +23,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.post("/upload", uploadService);
+app.post("/upload", upload.single("file"), uploadService);
 
 app.get("/files", filesService);
 

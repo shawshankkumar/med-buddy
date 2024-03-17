@@ -8,6 +8,6 @@ export const CONFIG = {
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY!,
   AWS_ENDPOINT: process.env.AWS_ENDPOINT!,
-  GEN_AI_GOOGLE_API_KEY: process.env.GOOGLE_API_KEY!,
+  GEN_AI_GOOGLE_API_KEY: process.env.GEN_AI_GOOGLE_API_KEY!,
   ENV: process.env.ENV!,
 };

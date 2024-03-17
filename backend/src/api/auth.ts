@@ -33,7 +33,8 @@ export async function loginService(req: Request, res: Response) {
       token,
       userId: user.userId,
       createdAt: +new Date(),
-      role: ["developer"],
+      expireAt: +new Date() + 1000 * 60 * 60 * 24 * 30 * 2,
+      roles: ["developer"],
     });
     res.status(200).json({
       message: "Login successful",
