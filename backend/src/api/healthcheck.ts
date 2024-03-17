@@ -6,6 +6,7 @@ export function healthcheckService(req: Request, res: Response) {
     uptime: process.uptime(),
     timestamp: +new Date(),
     message: "Med Buddy healthcheck successfull!",
+    requestId: res.locals.requestId
   };
   logger.info(resBody);
   res.status(200).json(resBody);
