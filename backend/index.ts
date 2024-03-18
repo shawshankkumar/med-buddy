@@ -4,7 +4,7 @@ import helmet from "helmet";
 import { logger } from "./src/lib/logger";
 import { healthcheckService } from "./src/api/healthcheck";
 import { loginService, signupService } from "./src/api/auth";
-import { filesService, uploadService } from "./src/api/files";
+import { filesService, shareService, sharedFilesService, uploadService } from "./src/api/files";
 import { summaryService } from "./src/api/genai";
 import { ulid } from "ulid";
 import { Request, Response, NextFunction } from "express";
@@ -32,6 +32,10 @@ app.post("/summary", summaryService);
 app.post("/register", signupService);
 
 app.post("/login", loginService);
+
+app.post("/share", shareService);
+
+app.get("/files-shared", sharedFilesService);
 
 app.get("/", healthcheckService);
 

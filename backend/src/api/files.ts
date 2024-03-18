@@ -44,7 +44,7 @@ export async function uploadService(req: Request, res: Response) {
   const text = response.text();
   console.log(text, pdfData.text);
   // @ts-ignore
-  if (text_2 === "false") {
+  if (text === "false") {
     deleteFile(file.filename);
     return res.send({
       response: "Error",
@@ -65,12 +65,18 @@ export async function uploadService(req: Request, res: Response) {
       text,
     });
   });
-
+  const prompt_2 =
+    "is the next line of the string resembling a medical test report, suggest a 5-10 word name for this report, use patient name, type of report and paramters \n" +
+    pdfData.text;
+  const result_2 = await model.generateContent(prompt_2);
+  const response_2 = await result_2.response;
+  const text_2 = response_2.text();
   await (await getDb()).collection("files").insertOne({
     createdAt: +new Date(),
     userId,
     fileName: file.filename,
-    reportName: req.body.name,
+    reportName: text_2,
+    sharedWith: [],
   });
 
   deleteFile(file.filename);
@@ -89,6 +95,61 @@ export async function filesService(req: Request, res: Response) {
     .collection("files")
     .find({ userId })
     .toArray();
+  const updatedData = data.map((e) => {
+    const { _id, ...eNew } = e;
+    return {
+      ...eNew,
+      fileUrl: `https://cf.shawshankkumar.me/file%2F${e.userId}%2F${e.fileName}`,
+    };
+  });
+  res.status(200).json({
+    data: updatedData,
+  });
+}
+
+export async function shareService(req: Request, res: Response) {
+  const token = req.headers.authorization;
+  const tokenObj = await (await getDb())
+    .collection("tokens")
+    .findOne({ token });
+  if (!tokenObj) {
+    return res.status(401).json({ message: "Unauthorized: Token not found" });
+  }
+  if (!req.body.fileName) {
+    return res.status(422).json({ message: "File name mandatory" });
+  }
+  if (!req.body.email) {
+    return res.status(422).json({ message: "Email name mandatory" });
+  }
+  const userId = tokenObj.userId;
+  await (await getDb())
+    .collection("files")
+    .updateOne(
+      { userId, fileName: req.body.fileName },
+      { $push: { sharedWith: req.body.email } }
+    );
+  res.status(200).json({
+    success: true,
+  });
+}
+
+export async function sharedFilesService(req: Request, res: Response) {
+  const token = req.headers.authorization;
+  const tokenObj = await (await getDb())
+    .collection("tokens")
+    .findOne({ token });
+  if (!tokenObj) {
+    return res.status(401).json({ message: "Unauthorized: Token not found" });
+  }
+  const userId = tokenObj.userId;
+  const emailData = await( await getDb()).collection("users").findOne({userId});
+  const data = await (
+    await getDb()
+  )
+    .collection("files")
+    .find({ sharedWith: [emailData?.email] })
+    .toArray();
+
   const updatedData = data.map((e) => {
     const { _id, ...eNew } = e;
     return {
