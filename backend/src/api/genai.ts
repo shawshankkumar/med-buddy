@@ -23,7 +23,7 @@ export async function summaryService(req: Request, res: Response) {
   }
 
   if (!force && data.summary) {
-    const {dump, ...resData} = data;
+    const { dump, ...resData } = data;
     return res.status(200).json(resData);
   }
   const url = `https://cf.shawshankkumar.me/file%2F${userId}%2F${fileName}`;
@@ -71,5 +71,74 @@ export async function summaryService(req: Request, res: Response) {
   );
   res.status(200).json({
     data: finalData,
+  });
+}
+
+export async function getChatService(req: Request, res: Response) {
+  const token = req.headers.authorization;
+  const fileName = req.body.fileName;
+  const tokenObj = await (await getDb())
+    .collection("tokens")
+    .findOne({ token });
+  if (!tokenObj) {
+    return res.status(401).json({ message: "Unauthorized: Token not found" });
+  }
+  if (!req.body.message) {
+    return res.status(404).json({ message: "message not found" });
+  }
+
+  const userId = tokenObj.userId;
+  const data = await (await getDb())
+    .collection("files")
+    .findOne({ userId, fileName });
+  if (!data) {
+    return res.status(404).json({ message: "File not found" });
+  }
+
+  const url = `https://cf.shawshankkumar.me/file%2F${userId}%2F${fileName}`;
+  // @ts-ignore
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  console.log(data.chat);
+  const chat = model.startChat({
+    history: data.chat,
+    generationConfig: {
+      maxOutputTokens: 1000,
+    },
+  });
+
+  const result = await chat.sendMessage(req.body.message + "\n" + " reply to this in" + req.body.lang);
+
+  const response = await result.response;
+  const text = response.text();
+  console.log(text);
+  await (await getDb()).collection("files").updateOne(
+    { userId, fileName },
+    {
+      $push: {
+        chat: {
+          $each: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text: req.body.message,
+                },
+              ],
+            },
+            {
+              role: "model",
+              parts: [
+                {
+                  text: text,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    }
+  );
+  res.status(200).json({
+    data: text,
   });
 }

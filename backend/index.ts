@@ -5,7 +5,7 @@ import { logger } from "./src/lib/logger";
 import { healthcheckService } from "./src/api/healthcheck";
 import { loginService, signupService } from "./src/api/auth";
 import { filesService, shareService, sharedFilesService, uploadService } from "./src/api/files";
-import { summaryService } from "./src/api/genai";
+import { getChatService, summaryService } from "./src/api/genai";
 import { ulid } from "ulid";
 import { Request, Response, NextFunction } from "express";
 import { upload } from "./src/lib/storage";
@@ -34,6 +34,8 @@ app.post("/register", signupService);
 app.post("/login", loginService);
 
 app.post("/share", shareService);
+
+app.post("/chat", getChatService);
 
 app.get("/files-shared", sharedFilesService);
 

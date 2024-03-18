@@ -77,6 +77,22 @@ export async function uploadService(req: Request, res: Response) {
     fileName: file.filename,
     reportName: text_2,
     sharedWith: [],
+    chat: [
+      {
+        role: "user",
+        parts: [
+          {
+            text:
+              "Hello, I want you to pretend that you are a doctor and a nutritionist. Based on the report data in next line, please reply to me as if you are a doctor, be descriptive and answer with as much clarity and details as you can. each text from user is a question related to the report, take that in context. Do not refuse any questions, just politely reply.\n" +
+              pdfData.text,
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Great to meet you. I am medical bot" }],
+      },
+    ],
   });
 
   deleteFile(file.filename);
@@ -142,7 +158,9 @@ export async function sharedFilesService(req: Request, res: Response) {
     return res.status(401).json({ message: "Unauthorized: Token not found" });
   }
   const userId = tokenObj.userId;
-  const emailData = await( await getDb()).collection("users").findOne({userId});
+  const emailData = await (await getDb())
+    .collection("users")
+    .findOne({ userId });
   const data = await (
     await getDb()
   )
