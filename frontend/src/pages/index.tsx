@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Component() {
   return (
-    <div className="bg-[#F6FDC3] min-h-screen w-full">
+    <div className="bg-white min-h-screen w-full">
       <div className="flex items-center justify-ends">
         <div className="absolute top-0 right-0 w-1/3 h-screen">
           <Image
@@ -17,49 +17,72 @@ export default function Component() {
         </div>
         <div className="w-2/3 px-8 h-screen flex justify-center items-center">
           <div className="flex flex-col">
-            <h1 className="text-8xl font-extrabold text-[#FF8080]">
+            <h1 className="text-8xl font-extrabold text-[#023382]">
               Medical Buddy
             </h1>
-            <p className="text-2xl font-normal text-[#7743DB] pt-4 mb-4">
+            <p className="text-2xl font-normal text-[#3c84fb] pt-4 mb-4">
               Share you medical reports easily and securely, <br /> while also
-              gaining insights and chatting with your report
+              gaining insights and interacting with your report
             </p>
             <div className="flex flex-row">
               <Button
                 variant="outline"
-                className="bg-[#FF8080] text-white hover:bg-[#7743DB] hover:text-white w-28 h-10 mr-6"
+                className="bg-[#023382] text-white hover:bg-[#3c84fb] hover:text-white w-28 h-10 mr-6"
               >
                 Register
               </Button>
               <Button
                 variant="outline"
-                className="bg-[#FF8080] text-white hover:bg-[#7743DB] hover:text-white w-28 h-10"
+                className="bg-[#023382] text-white hover:bg-[#3c84fb] hover:text-white w-28 h-10"
               >
-                Login In
+                Login
               </Button>
             </div>
           </div>
         </div>
       </div>
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-[#FF8080] text-6xl font-bold">
-          Made by
-        </div>
-        <div className="flex flex-col">
-        <Image
-            src="/doctor.jpg"
-            alt="Description"
-            className=""
-            width={100}
-            height={100}
-          />
-            <Image
-            src="/doctor.jpg"
-            alt="Description"
-            className=""
-            width={100}
-            height={100}
-          />
+      <div className="min-h-screen text-center mt-36">
+        <div className="">
+          <div className="text-[#023382] text-6xl font-bold">Made by</div>
+          <div className="flex gap-24 justify-evenly mt-36">
+            <div>
+              <Image
+                src="/shashank.jpeg"
+                alt="Description"
+                className=""
+                width={350}
+                height={350}
+              />
+              <p className="text-[#3c84fb] text-xl font-semibold mt-4"> Shashank Kumar - RA2011026010181</p>
+              <p className="text-[#3c84fb] text-xl font-semibold">CSE with AIML (CINTEL)</p>
+            </div>
+
+            <div>
+              <Image
+                src="/anu.jpeg"
+                alt="Description"
+                className=""
+                width={350}
+                height={350}
+              />
+              <p className="text-[#3c84fb] text-xl font-semibold mt-4"> Anupama Jha - RA2011026010143</p>
+              <p className="text-[#3c84fb] text-xl font-semibold">CSE with AIML (CINTEL)</p>
+            </div>
+          </div>
+          <div className="text-[#023382] text-6xl font-bold mt-36">Under the guidance of</div>
+          <div className="flex gap-24 justify-evenly mt-36">
+           
+            <div>
+              <Image
+                src="/babu-sir.jpeg"
+                alt="Description"
+                className=""
+                width={350}
+                height={350}
+              />
+              <p className="text-[#3c84fb] text-xl font-semibold mt-4 mb-12">Dr. Babu R (Assistant Professor, CINTEL)</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
