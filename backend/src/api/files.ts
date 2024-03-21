@@ -87,10 +87,12 @@ export async function uploadService(req: Request, res: Response) {
               pdfData.text,
           },
         ],
+        timestamp: +new Date(),
       },
       {
         role: "model",
         parts: [{ text: "Great to meet you. I am medical bot" }],
+        timestamp: +new Date() + 1,
       },
     ],
   });
@@ -177,5 +179,25 @@ export async function sharedFilesService(req: Request, res: Response) {
   });
   res.status(200).json({
     data: updatedData,
+  });
+}
+
+export async function getChatAllService(req: Request, res: Response) {
+  const token = req.headers.authorization;
+  const tokenObj = await (await getDb())
+    .collection("tokens")
+    .findOne({ token });
+  if (!tokenObj) {
+    return res.status(401).json({ message: "Unauthorized: Token not found" });
+  }
+  const data = await (await getDb())
+    .collection("files")
+    .findOne({ fileName: req.body.fileName });
+  if (!data) {
+    res.status(404).json({ message: "File not found" });
+  }
+  res.status(200).json({
+    data: data!.chat,
+    fileData: data
   });
 }

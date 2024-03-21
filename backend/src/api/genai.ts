@@ -88,9 +88,7 @@ export async function getChatService(req: Request, res: Response) {
   }
 
   const userId = tokenObj.userId;
-  const data = await (await getDb())
-    .collection("files")
-    .findOne({ userId, fileName });
+  const data = await (await getDb()).collection("files").findOne({ fileName });
   if (!data) {
     return res.status(404).json({ message: "File not found" });
   }
@@ -106,13 +104,15 @@ export async function getChatService(req: Request, res: Response) {
     },
   });
 
-  const result = await chat.sendMessage(req.body.message + "\n" + " reply to this in" + req.body.lang);
+  const result = await chat.sendMessage(
+    req.body.message + "\n" + " reply to this in" + req.body.lang
+  );
 
   const response = await result.response;
   const text = response.text();
   console.log(text);
   await (await getDb()).collection("files").updateOne(
-    { userId, fileName },
+    { fileName },
     {
       $push: {
         chat: {
@@ -124,6 +124,7 @@ export async function getChatService(req: Request, res: Response) {
                   text: req.body.message,
                 },
               ],
+              timestamp: +new Date(),
             },
             {
               role: "model",
@@ -132,13 +133,35 @@ export async function getChatService(req: Request, res: Response) {
                   text: text,
                 },
               ],
+              timestamp: +new Date() + 1,
             },
           ],
         },
       },
     }
   );
+
+  const newData = data.chat.concat([
+    {
+      role: "user",
+      parts: [
+        {
+          text: req.body.message,
+        },
+      ],
+      timestamp: +new Date(),
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: text,
+        },
+      ],
+      timestamp: +new Date() + 1,
+    },
+  ]);
   res.status(200).json({
-    data: text,
+    data: newData.sort((a: any, b: any) => a.timestamp - b.timestamp),
   });
 }
