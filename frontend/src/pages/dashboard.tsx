@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { ChangeEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,9 +19,9 @@ export default function CardWithForm() {
     name: "",
     report: "",
   });
-  const [fileName, setFiles] = React.useState(null);
+  const [fileName, setFiles] = React.useState<File | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -35,7 +35,7 @@ export default function CardWithForm() {
 
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
-    formDataToSend.append("file", fileName);
+    formDataToSend.append("file", "");
     toast("Event has been created.");
 
     try {
@@ -86,7 +86,11 @@ export default function CardWithForm() {
                   placeholder="Upload file"
                   className="text-white"
                   accept=".pdf"
-                  onChange={(e) => setFiles(e.target.files[0])}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setFiles(e.target.files[0]);
+                    }
+                  }}
                 />
               </div>
             </div>

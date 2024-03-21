@@ -152,7 +152,7 @@ export default function Chat() {
                   onValueChange={setPosition}
                 >
                   {["English", "Bengali", "Hindi", "Tamil", "Marathi"].map((e) => {
-                    return <DropdownMenuRadioItem value={e}>{e}</DropdownMenuRadioItem>
+                    return <DropdownMenuRadioItem value={e} key={e}>{e}</DropdownMenuRadioItem>
                   })}
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
