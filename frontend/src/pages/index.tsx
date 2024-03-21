@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Component() {
   return (
@@ -25,18 +26,22 @@ export default function Component() {
               gaining insights and interacting with your report
             </p>
             <div className="flex flex-row">
+            <Link href={"/register"}>
               <Button
                 variant="outline"
-                className="bg-[#023382] text-white hover:bg-[#3c84fb] hover:text-white w-28 h-10 mr-6"
+                className="bg-[#023382] text-white hover:bg-[#3c84fb] hover:text-white w-28 h-10"
               >
                 Register
               </Button>
+              </Link>
+              <Link href={"/login"} className="ml-12">
               <Button
                 variant="outline"
                 className="bg-[#023382] text-white hover:bg-[#3c84fb] hover:text-white w-28 h-10"
               >
                 Login
               </Button>
+              </Link>
             </div>
           </div>
         </div>
