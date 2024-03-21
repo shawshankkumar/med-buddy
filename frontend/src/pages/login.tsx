@@ -28,9 +28,6 @@ import axios from "axios";
 import { toast } from "sonner";
 
 const FormSchema = z.object({
-  name: z.string().min(2, {
-    message: "name must be at least 2 characters.",
-  }),
   email: z.string().email(),
   password: z.string().min(2, {
     message: "password must be at least 2 characters.",
@@ -41,12 +38,15 @@ export default function CardWithForm() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       console.log("inputData: ", data);
-      await axios.post(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + "/register",
+      const { data: loginData } = await axios.post(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/login",
         data
       );
-      toast.success("Registration successful, please login");
-      window.location.href = "/login";
+      window.localStorage.setItem("userData", JSON.stringify(loginData));
+      toast.success("Login successful, redirecting to dashboard");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 3 * 1000);
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +54,6 @@ export default function CardWithForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
@@ -65,33 +64,16 @@ export default function CardWithForm() {
       <Card className="w-1/2 m-auto shadow-2xl">
         <CardHeader>
           <CardTitle className="text-[#023382] font-bold text-2xl">
-            Register now
+            Login now
           </CardTitle>
           <CardDescription className="">
-            Once you register, we provide a complete suite of tools to manage
-            your medical reports
+            Once you login, we provide a complete suite of tools to manage your
+            medical reports
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="mb-6">
-                    <FormLabel className="text-[#023382]">Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="James Bond" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -115,6 +97,7 @@ export default function CardWithForm() {
                     <FormLabel className="text-[#023382]">Password</FormLabel>
                     <FormControl>
                       <Input
+                        type="password"
                         placeholder="If I tell you, I'll have to kill you"
                         {...field}
                       />
@@ -127,19 +110,10 @@ export default function CardWithForm() {
                 )}
               />
               <div className="flex justify-between mt-4">
-                <Button className="bg-[#023382]">Register</Button>
+                <Button className="bg-[#023382]">Login</Button>
               </div>
             </form>
           </Form>
-          <Button
-            variant="outline"
-            className="mt-4 px-6 py-3"
-            onClick={() => {
-              window.location.href = "/login";
-            }}
-          >
-            Login
-          </Button>
         </CardContent>
         <CardFooter></CardFooter>
       </Card>
