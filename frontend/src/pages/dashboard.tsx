@@ -21,7 +21,7 @@ export default function CardWithForm() {
   });
   const [fileName, setFiles] = React.useState<File | null>(null);
 
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: any) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -35,14 +35,21 @@ export default function CardWithForm() {
 
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
-    formDataToSend.append("file", "");
-    toast("Event has been created.");
-
+    formDataToSend.append("file", fileName as File);
+    console.log("Form Data:", formDataToSend);
     try {
       toast.promise(
-        axios.post("http://127.0.0.1:3001/upload", formDataToSend, {
-          headers: { authorization: "token_01HPT3DCKNSKFHWFJSWEEK296F" },
-        }),
+        axios.post(
+          process.env.NEXT_PUBLIC_API_ENDPOINT + "/upload",
+          formDataToSend,
+          {
+            headers: {
+              Authorization: JSON.parse(
+                window.localStorage.getItem("userData") ?? "{}"
+              ).token,
+            },
+          }
+        ),
         {
           loading: "Loading...",
           success: (data) => {
@@ -56,35 +63,39 @@ export default function CardWithForm() {
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Card className="w-[400px] bg-brand-400 text-white">
+    <div className="w-screen min-h-screen text-[#023382] pt-36">
+      <Card className="w-1/2 bg-brand-400 m-auto shadow-2xl">
         <CardHeader>
-          <CardTitle>Upload a PDF</CardTitle>
-          <CardDescription className="text-white">
+          <CardTitle className="text-2xl text-[#023382]">
+            Upload a PDF
+          </CardTitle>
+          <CardDescription className="">
             Get advanced level data with one click
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5 text-white">
-                <Label htmlFor="name">Name</Label>
+              <div className="flex flex-col space-y-1.5 mt-6">
+                <Label htmlFor="name" className="text-[#023382] text-xl">
+                  Name
+                </Label>
                 <Input
                   id="name"
                   placeholder="Name of your project"
-                  className="text-white border-white focus:border-white"
+                  className="mt-4"
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="report" className="text-white">
+              <div className="flex flex-col space-y-1.5 mt-6">
+                <Label htmlFor="report" className="text-[#023382] text-xl">
                   Report
                 </Label>
                 <Input
                   type="file"
                   id="report"
                   placeholder="Upload file"
-                  className="text-white"
+                  className=""
                   accept=".pdf"
                   onChange={(e) => {
                     if (e.target.files) {
@@ -96,11 +107,19 @@ export default function CardWithForm() {
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" className="text-black">
-            Cancel
+        <CardFooter className="flex justify-between">   
+          <Button onClick={handleDeploy} className="bg-[#023382]">
+            Upload
           </Button>
-          <Button onClick={handleDeploy}>Upload</Button>
+          <Button
+            variant="outline"
+            className="px-6 bg-[#023382] text-white hover:bg-black hover:text-white"
+            onClick={() => {
+              window.location.href = "/files";
+            }}
+          >
+            View Files
+          </Button>
         </CardFooter>
       </Card>
     </div>

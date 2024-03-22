@@ -61,7 +61,6 @@ export default function Component() {
               <p className="text-[#3c84fb] text-xl font-semibold mt-4"> Shashank Kumar - RA2011026010181</p>
               <p className="text-[#3c84fb] text-xl font-semibold">CSE with AIML (CINTEL)</p>
             </div>
-
             <div>
               <Image
                 src="/anu.jpeg"

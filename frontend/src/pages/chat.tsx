@@ -19,6 +19,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+function formatTimestamp(epochTimestamp: number) {
+  // Convert epoch timestamp to milliseconds
+  const timestampInMillis = epochTimestamp * 1000;
+  
+  // Get the date object corresponding to the timestamp
+  const dateObject = new Date(timestampInMillis);
+  
+  // Extract hours, minutes, and date from the date object
+  const hours = dateObject.getHours();
+  const minutes = dateObject.getMinutes();
+  const month = dateObject.toLocaleString('default', { month: 'long' });
+  const day = dateObject.getDate();
+  
+  // Convert hours to 12-hour format
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12;
+  
+  // Format minutes with leading zero if necessary
+  const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+  
+  // Construct the human-readable format
+  const formattedTime = `${formattedHours}:${formattedMinutes} ${period}, on ${day} ${month}`;
+  
+  return formattedTime;
+}
+
 export default function Chat() {
   const [message, setMessage] = useState<string>("");
   const [id, setId] = useState<string>("");
@@ -126,6 +152,7 @@ export default function Chat() {
                   .length > 0
                   ? e.parts[0].text.replace(/\*\*/g, "").replace(/\*/g, "")
                   : "Censored text"}
+                  <p className="font-extralight text-xs pt-2">{formatTimestamp(e.timestamp)}</p>
               </div>
             </div>
           );
@@ -151,7 +178,7 @@ export default function Chat() {
                   value={position}
                   onValueChange={setPosition}
                 >
-                  {["English", "Bengali", "Hindi", "Tamil", "Marathi"].map((e) => {
+                  {["English", "Bengali", "Hindi", "Marathi"].map((e) => {
                     return <DropdownMenuRadioItem value={e} key={e}>{e}</DropdownMenuRadioItem>
                   })}
                 </DropdownMenuRadioGroup>
