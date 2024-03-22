@@ -118,10 +118,31 @@ export async function filesService(req: Request, res: Response) {
     return {
       ...eNew,
       fileUrl: `https://cf.shawshankkumar.me/file%2F${e.userId}%2F${e.fileName}`,
+      shared: false
     };
   });
+  const emailData = await (await getDb())
+    .collection("users")
+    .findOne({ userId });
+  
+  const dataShared = await (
+    await getDb()
+  )
+    .collection("files")
+    .find({ sharedWith: [emailData!.email] })
+    .toArray();
+
+  const updatedDataShared = dataShared.map((e) => {
+    const { _id, ...eNew } = e;
+    return {
+      ...eNew,
+      fileUrl: `https://cf.shawshankkumar.me/file%2F${e.userId}%2F${e.fileName}`,
+      shared: true
+    };
+  });
+
   res.status(200).json({
-    data: updatedData,
+    data: updatedData.concat(updatedDataShared),
   });
 }
 

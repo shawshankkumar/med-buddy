@@ -25,7 +25,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.post("/upload", upload.single("file"), uploadService);
 
-app.get("/files", filesService);
+app.post("/files", filesService);
 
 app.post("/summary", summaryService);
 

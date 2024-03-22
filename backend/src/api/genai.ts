@@ -17,7 +17,7 @@ export async function summaryService(req: Request, res: Response) {
   const userId = tokenObj.userId;
   const data = await (await getDb())
     .collection("files")
-    .findOne({ userId, fileName });
+    .findOne({ fileName });
   if (!data) {
     return res.status(404).json({ message: "File not found" });
   }
@@ -26,7 +26,7 @@ export async function summaryService(req: Request, res: Response) {
     const { dump, ...resData } = data;
     return res.status(200).json(resData);
   }
-  const url = `https://cf.shawshankkumar.me/file%2F${userId}%2F${fileName}`;
+  const url = `https://cf.shawshankkumar.me/file%2F${data.userId}%2F${fileName}`;
   // @ts-ignore
   const pdfDownload = await axios.get(url, { responseType: "arraybuffer" });
   const pdfData = await PdfParse(pdfDownload.data);
@@ -64,7 +64,7 @@ export async function summaryService(req: Request, res: Response) {
     food_veg: resultAll[3].response.text(),
   };
   await (await getDb()).collection("files").updateOne(
-    { userId, fileName },
+    { fileName },
     {
       $set: { ...finalData, dump: JSON.stringify(resultAll) },
     }
