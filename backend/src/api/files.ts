@@ -205,9 +205,11 @@ export async function sharedFilesService(req: Request, res: Response) {
 
 export async function getChatAllService(req: Request, res: Response) {
   const token = req.headers.authorization;
+  console.log("uauau")
   const tokenObj = await (await getDb())
     .collection("tokens")
     .findOne({ token });
+    console.log(tokenObj)
   if (!tokenObj) {
     return res.status(401).json({ message: "Unauthorized: Token not found" });
   }
@@ -217,6 +219,7 @@ export async function getChatAllService(req: Request, res: Response) {
   if (!data) {
     res.status(404).json({ message: "File not found" });
   }
+  console.log(data)
   res.status(200).json({
     data: data!.chat,
     fileData: data
