@@ -52,25 +52,23 @@ export default function Component() {
           <div className="flex gap-24 justify-evenly mt-36">
             <div>
               <Image
-                src="/shashank.jpeg"
+                src="/pic_1.jpg"
                 alt="Description"
                 className=""
                 width={350}
                 height={350}
               />
-              <p className="text-[#3c84fb] text-xl font-semibold mt-4"> Shashank Kumar - RA2011026010181</p>
-              <p className="text-[#3c84fb] text-xl font-semibold">CSE with AIML (CINTEL)</p>
+              <p className="text-[#3c84fb] text-xl font-semibold mt-4">PRIYAN R K - RA2111003010568</p>
             </div>
             <div>
               <Image
-                src="/anu.jpeg"
+                src="/pic_2.jpg"
                 alt="Description"
                 className=""
                 width={350}
                 height={350}
               />
-              <p className="text-[#3c84fb] text-xl font-semibold mt-4"> Anupama Jha - RA2011026010143</p>
-              <p className="text-[#3c84fb] text-xl font-semibold">CSE with AIML (CINTEL)</p>
+              <p className="text-[#3c84fb] text-xl font-semibold mt-4">ANISH MOHAN R R - RA2111003010566</p>
             </div>
           </div>
           <div className="text-[#023382] text-6xl font-bold mt-36">Under the guidance of</div>
@@ -78,13 +76,13 @@ export default function Component() {
            
             <div>
               <Image
-                src="/babu-sir.jpeg"
+                src="/pic_3.jpg"
                 alt="Description"
                 className=""
                 width={350}
                 height={350}
               />
-              <p className="text-[#3c84fb] text-xl font-semibold mt-4 mb-12">Dr. Babu R (Assistant Professor, CINTEL)</p>
+              <p className="text-[#3c84fb] text-xl font-semibold mt-4 mb-12">Dr.AKILANDESWARI <br /> Department of Computing Technologies</p>
             </div>
           </div>
         </div>

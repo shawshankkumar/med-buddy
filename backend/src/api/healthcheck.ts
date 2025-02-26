@@ -5,7 +5,7 @@ export function healthcheckService(req: Request, res: Response) {
   const resBody = {
     uptime: process.uptime(),
     timestamp: +new Date(),
-    message: "Med Buddy healthcheck successfull!",
+    message: "Medical friend healthcheck successfull!",
     requestId: res.locals.requestId
   };
   logger.info(resBody);
