@@ -5,7 +5,7 @@ export function healthcheckService(req: Request, res: Response) {
   const resBody = {
     uptime: process.uptime(),
     timestamp: +new Date(),
-    message: "Medical friend healthcheck successfull!",
+    message: "Medofile - Cloud integrated AI : medical report analysis healthcheck successful!",
     requestId: res.locals.requestId
   };
   logger.info(resBody);

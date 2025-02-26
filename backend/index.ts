@@ -44,5 +44,5 @@ app.post("/chat-all", getChatAllService)
 app.get("/", healthcheckService);
 
 app.listen(port, () => {
-  logger.info(`Medical friend app listening on port ${port}`);
+  logger.info(`Medofile - Cloud integrated AI : medical report analysis app listening on port ${port}`);
 });

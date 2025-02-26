@@ -19,7 +19,7 @@ export default function Component() {
         <div className="w-2/3 px-8 h-screen flex justify-center items-center">
           <div className="flex flex-col">
             <h1 className="text-8xl font-extrabold text-[#023382]">
-              Medical Buddy
+              Medofile - Cloud integrated AI : medical report analysis
             </h1>
             <p className="text-2xl font-normal text-[#3c84fb] pt-4 mb-4">
               Share you medical reports easily and securely, <br /> while also

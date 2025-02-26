@@ -50,7 +50,7 @@ export default function Chat() {
   const [id, setId] = useState<string>("");
   const [chat, setChat] = useState<any>([]);
   const [userData, setUserData] = useState<any>([]);
-  const [loading, setLoading] = useState<string>("Ask Med Buddy");
+  const [loading, setLoading] = useState<string>("Ask Medofile");
   const [position, setPosition] = useState("English");
 
   async function sendMessage() {
@@ -93,7 +93,7 @@ export default function Chat() {
       toast.success("Response generated successfully", {
         position: "bottom-left",
       });
-      setLoading("Ask Med Buddy");
+      setLoading("Ask Medofile");
     } catch (err) {
       toast.error("Something went wrong");
       console.log(err);
@@ -131,7 +131,7 @@ export default function Chat() {
       <div className="w-2/3 m-auto">
         <div className="flex justify-between my-12">
           <p className="text-[#023382] font-bold text-xl">
-            Welcome to Med Buddy, {userData?.user?.name}
+            Welcome to Medofile - Cloud integrated AI : medical report analysis, {userData?.user?.name}
           </p>
           <Button className="bg-[#023382]">Logout</Button>
         </div>
