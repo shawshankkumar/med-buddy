@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getDb } from "../lib/db";
 import { ulid } from "ulid";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export async function loginService(req: Request, res: Response) {
   try {
