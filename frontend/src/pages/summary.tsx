@@ -13,7 +13,7 @@ export default function CardWithForm() {
           Summary
         </span>
         <span className="flex justify-center text-justify text-base text-[#023382] font-light mb-12">
-          Medical Report Summary
+          Medical Report Summary 
           <br />
           <br />
           Patient Name: Mr. AVINASH RANJAN
