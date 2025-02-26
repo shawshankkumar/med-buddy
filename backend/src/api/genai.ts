@@ -31,7 +31,7 @@ export async function summaryService(req: Request, res: Response) {
   const pdfDownload = await axios.get(url, { responseType: "arraybuffer" });
   const pdfData = await PdfParse(pdfDownload.data);
   // @ts-ignore
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt =
     "Imagine you're a doctor tasked with summarizing a medical report for a patient. After reviewing the test parameters, provide a concise summary of the findings and their implications without delving into technical jargon. Describe any abnormalities detected in a clear and reassuring manner. Your summary should be no more than 1000 words and should aim to educate the patient about their health without causing undue alarm. Finally, provide a succinct summary of the entire report in the next line in 500 words or less. \n" +
@@ -95,7 +95,7 @@ export async function getChatService(req: Request, res: Response) {
 
   const url = `https://cf.shawshankkumar.me/file%2F${userId}%2F${fileName}`;
   // @ts-ignore
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   console.log(data.chat);
   const chat = model.startChat({
     history: data.chat,

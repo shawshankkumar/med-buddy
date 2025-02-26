@@ -34,7 +34,7 @@ export async function uploadService(req: Request, res: Response) {
 
   const pdfData = await PdfParse(fileContent);
   // @ts-ignore
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt =
     "is the next line of the string resembling a medical test report? if yes return true otherwise false, nothing else \n" +
