@@ -62,7 +62,7 @@ export default function Component() {
             </div>
             <div>
               <Image
-                src="/pic_2.jpg"
+                src="/pic_22.jpg"
                 alt="Description"
                 className=""
                 width={350}
